@@ -24,23 +24,23 @@ class VolunteerATron
     end
     @users
   end
-  
+
   def find_volunteers_from(url)
     search_page = Nokogiri::HTML(read_page(url))
 
     get_users_from_search(search_page)
-    
+
     return get_next_page_from_search(search_page)
   end
-  
+
   def get_users_from_search(search_page)
     user_elems = search_page.xpath(%q{id('code_search_results')//div[@class='result']})
 
-    @users += users.map do |user|
-      user.xpath(%q{.//h2[@class='title']/a/@href}).text.gsub(/^\//,'')
+    @users += user_elems.map do |user|
+      VolunteerATron::Volunteer.new(user.xpath(%q{.//h2[@class='title']/a/@href}).text.gsub(/^\//,''))
     end
   end
-  
+
   def get_next_page_from_search(search_page)
     pagination = search_page.xpath(%q{id('code_search_results')//div[@class='pagination']})
     current_page = pagination.xpath(%q{.//span[@class='current']})

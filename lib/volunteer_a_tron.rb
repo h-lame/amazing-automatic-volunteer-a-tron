@@ -1,19 +1,21 @@
 require 'volunteer_a_tron/reader'
 require 'volunteer_a_tron/cachet'
+require 'volunteer_a_tron/volunteer'
+require 'volunteer_a_tron/config'
 require 'nokogiri'
 
 class VolunteerATron  
   attr_accessor :users
   include VolunteerATron::Reader
-  def initialize(with_caching = true)
+  def initialize
     @users = []
-    if with_caching
+    if VolunteerATron.use_caching?
       self.class.class_eval do
         include VolunteerATron::Cachet
       end
     end
   end
-  
+
   def fetch_all_users(starting_from)
     next_page = starting_from
     loop do

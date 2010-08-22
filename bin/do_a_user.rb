@@ -10,7 +10,7 @@ volunteer = VolunteerATron::Volunteer.new(who)
 
 volunteer.fetch_all_repos
 
-print "Do we thing #{volunteer.github_user_name} has done anything interesting?"
+print "Do we think #{volunteer.github_user_name} has done anything interesting?"
 if volunteer.done_anything_interesting?
   puts ' Yes'
   puts "Interesting #{volunteer.what_might_be_interesting.size} vs. Uninteresting #{volunteer.repos.size}"

@@ -1,5 +1,6 @@
 require 'volunteer_a_tron/reader'
 require 'volunteer_a_tron/cachet'
+require 'volunteer_a_tron/throttler'
 require 'volunteer_a_tron/config'
 require 'volunteer_a_tron/interesting_thing'
 require 'nokogiri'
@@ -13,6 +14,7 @@ class VolunteerATron
     def initialize(github_user_name)
       @github_user_name = github_user_name
       @repos = []
+      VolunteerATron.limit_my_rate(self)
       if VolunteerATron.use_caching?
         self.class.class_eval do
           include VolunteerATron::Cachet

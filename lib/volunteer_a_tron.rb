@@ -1,6 +1,7 @@
 require 'volunteer_a_tron/reader'
 require 'volunteer_a_tron/cachet'
 require 'volunteer_a_tron/volunteer'
+require 'volunteer_a_tron/throttler'
 require 'volunteer_a_tron/config'
 require 'nokogiri'
 
@@ -9,6 +10,7 @@ class VolunteerATron
   include VolunteerATron::Reader
   def initialize
     @users = []
+    VolunteerATron.limit_my_rate(self)
     if VolunteerATron.use_caching?
       self.class.class_eval do
         include VolunteerATron::Cachet

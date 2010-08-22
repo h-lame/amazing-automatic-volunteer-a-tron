@@ -57,11 +57,11 @@ class VolunteerATron
     end
 
     def really_interesting?
-      own_work? && last_pushed > VolunteerATron.interesting_event_horizon
+      own_work? && last_pushed && last_pushed > VolunteerATron.interesting_event_horizon
     end
 
     def a_bit_interesting?
-      fork? && last_pushed > VolunteerATron.interesting_event_horizon
+      fork? && last_pushed && last_pushed > VolunteerATron.interesting_event_horizon
     end
 
     include Comparable
@@ -95,9 +95,18 @@ class VolunteerATron
 
     protected
       def default_ordering(other_interesting_thing)
-        order = other_interesting_thing.last_pushed <=> last_pushed
-        order = other_interesting_thing.name <=> name if order == 0
-        order
+        base_order =
+          if last_pushed && other_interesting_thing.last_pushed
+            other_interesting_thing.last_pushed <=> last_pushed
+          elsif last_pushed
+            -1
+          elsif other_interesting_thing.last_pushed
+            1
+          else
+            0
+          end
+        base_order = other_interesting_thing.name <=> name if base_order == 0
+        base_order
       end
   end
 end

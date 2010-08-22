@@ -1,3 +1,5 @@
+require 'date'
+
 class VolunteerATron
   class << self
     def use_caching?
@@ -19,10 +21,45 @@ class VolunteerATron
     def interesting_event_horizon=(new_event_horizon)
       @interesting_event_horizon = new_event_horizon
     end
+
+    def use_rate_limiting?
+      !@rate_limiting.nil?
+    end
+
+    def limit_my_rate(base)
+      if use_rate_limiting?
+        rate_limit_module = @rate_limiting
+        base.class.class_eval { include rate_limit_module }
+      end
+    end
+
+    def turn_off_rate_limiting
+      @rate_limiting = nil
+    end
+
+    def use_spurty_rate_limiting
+      @rate_limiting = VolunteerATron::Throttler::Hare
+    end
+
+    def use_steady_rate_limiting
+      @rate_limiting = VolunteerATron::Throttler::Tortoise
+    end
+
+    def initial_setup_run?
+      @initial_setup_run ||= false
+    end
+
+    def run_initial_setup(&block)
+      @initial_setup_run = true
+      yield self
+    end
   end
 end
 
-require 'date'
-
-VolunteerATron.turn_caching_on
-VolunteerATron.interesting_event_horizon= (Date.today << 2) # 2 months ago (ish)
+unless VolunteerATron.initial_setup_run?
+  VolunteerATron.run_initial_setup do |config|
+    config.turn_caching_on
+    config.interesting_event_horizon = (Date.today << 2) # 2 months ago (ish)
+    config.use_spurty_rate_limiting
+  end
+end

@@ -9,7 +9,7 @@ class VolunteerATron
     def initialize(params)
       self.name = params[:name]
       self.description = params[:description]
-      self.url = params[:url]
+      self.url = params[:homepage]
       self.fork =  params[:fork]
       self.last_pushed = params[:last_pushed]
       self.owner = params[:owner]

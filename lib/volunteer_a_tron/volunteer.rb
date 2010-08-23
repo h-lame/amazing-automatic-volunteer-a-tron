@@ -34,9 +34,18 @@ class VolunteerATron
     end
 
     def fetch_all_repos(for_language = 'ruby')
-      repos_page = Nokogiri::XML(read_page(repo_url(for_language)))
+      begin
+        repos_page = Nokogiri::XML(read_page(repo_url(for_language)))
 
-      get_repos_from_search(repos_page, for_language)
+        get_repos_from_search(repos_page, for_language)
+      rescue OpenURI::HTTPError => e
+        if e.message.match(/404/)
+          puts "Uh-Oh! #{github_user_name} Doesn't have any repos!"
+          @repos = []
+        else
+          raise
+        end
+      end
     end
 
     def get_repos_from_search(repos_page, for_language = 'ruby')

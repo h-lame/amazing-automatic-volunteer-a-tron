@@ -4,6 +4,7 @@ class VolunteerATron
     attr_accessor :description
     attr_accessor :url
     attr_accessor :owner
+    attr_accessor :watchers
     attr_reader :last_pushed
 
     def initialize(params)
@@ -13,6 +14,7 @@ class VolunteerATron
       self.fork =  params[:fork]
       self.last_pushed = params[:last_pushed]
       self.owner = params[:owner]
+      self.watchers = params[:watchers].to_i
     end
 
     def fork?
@@ -44,6 +46,10 @@ class VolunteerATron
       end
     end
 
+    def popular?
+      watchers > 10
+    end
+
     def to_s
       "#{"#{owner.github_user_name}/" unless owner.nil?}#{@name}#{'(fork)' unless own_work?}: #{@description} (#{@url}) - #{last_pushed}"
     end
@@ -57,7 +63,7 @@ class VolunteerATron
     end
 
     def really_interesting?
-      own_work? && last_pushed && last_pushed > VolunteerATron.interesting_event_horizon
+      own_work? && popular? && last_pushed && last_pushed > VolunteerATron.interesting_event_horizon
     end
 
     def a_bit_interesting?

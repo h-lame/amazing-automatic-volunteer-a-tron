@@ -58,6 +58,7 @@ class VolunteerATron
                                                          :homepage => repo.xpath('./homepage/text()').text,
                                                          :fork => repo.xpath('./fork/text()').text,
                                                          :last_pushed => repo.xpath('./pushed-at/text()').text,
+                                                         :watchers => repo.xpath('./watchers/text()').text,
                                                          :owner => self)
         end
       end

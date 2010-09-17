@@ -55,7 +55,7 @@ class VolunteerATron
     end
 
     def at_all_interesting?
-      really_interesting? || a_bit_interesting?
+      possibly_interesting? || a_bit_interesting?
     end
 
     def uninteresting?
@@ -63,7 +63,11 @@ class VolunteerATron
     end
 
     def really_interesting?
-      own_work? && popular? && last_pushed && last_pushed > VolunteerATron.interesting_event_horizon
+      possibly_interesting? && popular?
+    end
+
+    def possibly_interesting?
+      own_work? && last_pushed && last_pushed > VolunteerATron.interesting_event_horizon
     end
 
     def a_bit_interesting?
@@ -80,8 +84,16 @@ class VolunteerATron
             else
               -1
             end
-          elsif self.a_bit_interesting?
+          elsif self.possibly_interesting?
             if other_interesting_thing.really_interesting?
+              1
+            elsif other_interesting_thing.possibly_interesting?
+              default_ordering(other_interesting_thing)
+            else
+              -1
+            end
+          else
+            if other_interesting_thing.possibly_interesting?
               1
             else
               default_ordering(other_interesting_thing)

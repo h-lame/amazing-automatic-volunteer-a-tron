@@ -2,6 +2,7 @@ require 'date'
 
 class VolunteerATron
   class << self
+    attr_accessor :interesting_event_horizon
     def use_caching?
       @use_caching
     end
@@ -12,14 +13,6 @@ class VolunteerATron
 
     def turn_caching_on
       @use_caching = true
-    end
-
-    def interesting_event_horizon
-      @interesting_event_horizon
-    end
-
-    def interesting_event_horizon=(new_event_horizon)
-      @interesting_event_horizon = new_event_horizon
     end
 
     def use_rate_limiting?

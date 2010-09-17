@@ -114,16 +114,18 @@ class VolunteerATron
     protected
       def default_ordering(other_interesting_thing)
         base_order =
-          if last_pushed && other_interesting_thing.last_pushed
-            other_interesting_thing.last_pushed <=> last_pushed
-          elsif last_pushed
+          if self.watchers != other_interesting_thing.watchers
+            other_interesting_thing.watchers <=> self.watchers
+          elsif self.last_pushed && other_interesting_thing.last_pushed
+            other_interesting_thing.last_pushed <=> self.last_pushed
+          elsif self.last_pushed
             -1
           elsif other_interesting_thing.last_pushed
             1
           else
             0
           end
-        base_order = other_interesting_thing.name <=> name if base_order == 0
+        base_order = other_interesting_thing.name <=> self.name if base_order == 0
         base_order
       end
   end

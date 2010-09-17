@@ -47,7 +47,7 @@ class VolunteerATron
     end
 
     def popular?
-      watchers > 10
+      watchers >= VolunteerATron.popularity_threshold
     end
 
     def to_s

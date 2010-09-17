@@ -51,7 +51,7 @@ class VolunteerATron
     end
 
     def to_s
-      "#{"#{owner.github_user_name}/" unless owner.nil?}#{@name}#{'(fork)' unless own_work?}: #{@description} (#{@url}) - #{last_pushed}"
+      "#{"#{owner.github_user_name}/" unless owner.nil?}#{@name}#{'(fork)' unless own_work?}: #{@description} (#{@url}) - #{last_pushed} - #{watchers} watcher#{"s" unless watchers == 1}"
     end
 
     def at_all_interesting?

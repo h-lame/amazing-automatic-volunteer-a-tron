@@ -27,7 +27,7 @@ class VolunteerATron
     end
 
     def repo_url(for_language)
-      u = "http://github.com/api/v2/xml/repos/show/#{@github_user_name}"
+      u = "https://github.com/api/v2/xml/repos/show/#{@github_user_name}"
       # NOTE - this doesn't do anything
       # u += "?language=#{for_language}" unless for_language.nil?
       u

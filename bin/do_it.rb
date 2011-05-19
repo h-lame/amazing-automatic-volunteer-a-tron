@@ -6,7 +6,7 @@ require 'volunteer_a_tron'
 
 location = ARGV[0] || 'london'
 
-search_base = "http://github.com/search?type=Users&language=ruby&q=location:#{location}"
+search_base = "https://github.com/search?type=Users&language=ruby&q=location:#{location}"
 
 volunteer_a_tron = VolunteerATron.new
 
